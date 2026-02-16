@@ -1,6 +1,5 @@
 import os 
 from datetime import date 
-
 PIPELINE_NAME:str = ""
 ARTIFACT_DIR:str = "artifact"
 

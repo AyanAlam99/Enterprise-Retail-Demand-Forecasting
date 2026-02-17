@@ -22,15 +22,19 @@ class DataIngestion :
         try : 
             logging.info(f"Exporting data from mongodb")
             mydata  =ExportData()
-            data_df = mydata.export_collection_as_dataframe(collection_name=self.data_ingestion_config.collection_name)
+            collections = self.data_ingestion_config.collection_names
+            raw_dir_file_path = self.data_ingestion_config.raw_data_dir
+            dir_path = os.path.dirname(raw_dir_file_path)
+            os.makedirs(raw_dir_file_path,exist_ok=True)
+            for col_name in collections:
+                logging.info(f"Exporting collection: {col_name}")
+                df = mydata.export_collection_as_dataframe(collection_name=col_name)
+                
+               
+                file_path = os.path.join(self.data_ingestion_config.raw_data_dir, f"{col_name}.csv")
+                df.to_csv(file_path, index=False, header=True)
+                logging.info(f"Saved {col_name} to {file_path}")
 
-            feature_store_file_path = self.data_ingestion_config.feature_store_file_path
-            dir_path = os.path.dirname(feature_store_file_path)
-            os.makedirs(dir_path,exist_ok=True)
-            logging.info(f"Saving exported data into {feature_store_file_path}")
-            data_df.to_csv(feature_store_file_path,index =  False , header = True)
-
-            return data_df
         except Exception as e : 
             raise MyException(e,sys)
         
@@ -61,9 +65,9 @@ class DataIngestion :
         try : 
             data = self.export_data_into_feature_store()
             logging.info("Got data from mongodb")
-            self.split_data_train_test(data)
+            # self.split_data_train_test(data)
 
-            data_ingestion_artifact = DataIngestionArtifact(trained_file_path=self.data_ingestion_config.training_file_path,test_file_path=self.data_ingestion_config.testing_file_path)
+            data_ingestion_artifact = DataIngestionArtifact(raw_data_dir_path=self.data_ingestion_config.raw_data_dir)
             logging.info(f"Data ingestion artifact: {data_ingestion_artifact}")
             return data_ingestion_artifact
         except Exception as e:

@@ -57,7 +57,7 @@ class DataIngestion :
             raise MyException(e , sys)
         
     def initiate_data_ingestion(self) ->DataIngestionArtifact:
-        logging.ingo("Entered initiate data ingestion method in dataingestion")
+        logging.info("Entered initiate data ingestion method in dataingestion")
         try : 
             data = self.export_data_into_feature_store()
             logging.info("Got data from mongodb")

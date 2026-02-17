@@ -21,13 +21,13 @@ class ExportData :
         except Exception as e : 
             raise MyException(e,sys)
     
-    def export_collection_as_dataframe(self,collection_name : str,database_name :Optional[str]) ->pd.DataFrame : 
+    def export_collection_as_dataframe(self,collection_name : str,database_name :Optional[str] = None) ->pd.DataFrame : 
         """
         basically if you want to export data from a specific database , then you have to pass that database name as an arg here , otherwise if you wont , it will take the default one that has been used while establishing the mongodb connction at init 
         """
         try : 
             if database_name is None : 
-                collection = self.clientlient.database[collection_name]
+                collection = self.client.data_base[collection_name]
             else : 
                 collection = self.client.client[database_name][collection_name]
             print(f'Fetching data from mongodb')

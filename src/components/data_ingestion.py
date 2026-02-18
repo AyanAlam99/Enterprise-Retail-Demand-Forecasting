@@ -66,8 +66,16 @@ class DataIngestion :
             data = self.export_data_into_feature_store()
             logging.info("Got data from mongodb")
             # self.split_data_train_test(data)
+            raw_dir = self.data_ingestion_config.raw_data_dir
 
-            data_ingestion_artifact = DataIngestionArtifact(raw_data_dir_path=self.data_ingestion_config.raw_data_dir)
+            data_ingestion_artifact = DataIngestionArtifact(
+                        train_file_path = os.path.join(raw_dir, "Train_Data.csv"),
+                        test_file_path = os.path.join(raw_dir, "Test.csv"),
+                        oil_file_path = os.path.join(raw_dir, "Oil.csv"),
+                        stores_file_path = os.path.join(raw_dir, "Stores.csv"),
+                        holiday_file_path = os.path.join(raw_dir, "Holidays_Events.csv"),
+                        transactions_file_path = os.path.join(raw_dir, "Transactions.csv"),
+                    )
             logging.info(f"Data ingestion artifact: {data_ingestion_artifact}")
             return data_ingestion_artifact
         except Exception as e:

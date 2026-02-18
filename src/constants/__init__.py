@@ -16,3 +16,5 @@ TRAIN_FILE_NAME: str = "train.csv"
 TEST_FILE_NAME: str = "test.csv"
 
 DATA_INGESTION_COLLECTION_NAME = ["Train_Data", "Test", "Oil", "Stores", "Holidays_Events", "Transactions"]
+
+SCHEMA_FILE_PATH = "./configuration/schema_config.yaml"

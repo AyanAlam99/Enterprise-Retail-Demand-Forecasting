@@ -1,0 +1,85 @@
+
+train:
+  columns:
+    - date: object
+    - store_nbr: int
+    - family: str
+    - sales: float
+    - onpromotion: int
+  numerical_columns:
+    - store_nbr
+    - sales
+    - onpromotion
+  categorical_columns:
+    - family
+
+
+
+test:
+  columns:
+    - date: object
+    - store_nbr: int
+    - family: str
+    - onpromotion: int
+  numerical_columns:
+    - store_nbr
+    - onpromotion
+  categorical_columns:
+    - family
+
+
+
+transactions:
+  columns:
+    - date: object
+    - store_nbr: int
+    - transactions: int
+  numerical_columns:
+    - store_nbr
+    - transactions
+
+
+
+stores:
+  columns:
+    - store_nbr: int
+    - city: str
+    - state: str
+    - type: str
+    - cluster: int
+  numerical_columns:
+    - store_nbr
+    - cluster
+  categorical_columns:
+    - city
+    - state
+    - type
+
+oil:
+  columns:
+    - date: object
+    - dcoilwtico: float
+  numerical_columns:
+    - dcoilwtico
+
+
+holidays:
+  columns:
+    - date: object
+    - type: str
+    - locale: str
+    - locale_name: str
+    - description: str
+    - transferred: bool
+  categorical_columns:
+    - type
+    - locale
+    - locale_name
+    - transferred
+
+
+# date_features:
+#   - month
+#   - year
+#   - day_of_week
+#   - is_weekend

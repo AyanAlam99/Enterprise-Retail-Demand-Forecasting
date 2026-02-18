@@ -34,8 +34,8 @@ class ExportData :
             df = pd.DataFrame(list(collection.find()))
             print(f"Data ftched with len {len(df)}")
             
-            if "id" in df.columns.to_list() : 
-                df = df.drop(columns=["id"],axis=1)
+            if "_id" in df.columns.to_list() : 
+                df = df.drop(columns=["_id"],axis=1)
             df.replace({"na" : np.nan},inplace=True)  #as pandas function only consider np.nan as missing value
             return df
         

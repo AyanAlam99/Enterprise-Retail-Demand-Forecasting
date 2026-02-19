@@ -1,11 +1,11 @@
 
 train:
   columns:
-    - date: object
-    - store_nbr: int
-    - family: str
-    - sales: float
-    - onpromotion: int
+    date: object
+    store_nbr: int
+    family: str
+    sales: float
+    onpromotion: int
   numerical_columns:
     - store_nbr
     - sales
@@ -17,10 +17,10 @@ train:
 
 test:
   columns:
-    - date: object
-    - store_nbr: int
-    - family: str
-    - onpromotion: int
+    date: object
+    store_nbr: int
+    family: str
+    onpromotion: int
   numerical_columns:
     - store_nbr
     - onpromotion
@@ -31,9 +31,9 @@ test:
 
 transactions:
   columns:
-    - date: object
-    - store_nbr: int
-    - transactions: int
+    date: object
+    store_nbr: int
+    transactions: int
   numerical_columns:
     - store_nbr
     - transactions
@@ -42,11 +42,11 @@ transactions:
 
 stores:
   columns:
-    - store_nbr: int
-    - city: str
-    - state: str
-    - type: str
-    - cluster: int
+    store_nbr: int
+    city: str
+    state: str
+    type: str
+    cluster: int
   numerical_columns:
     - store_nbr
     - cluster
@@ -57,20 +57,20 @@ stores:
 
 oil:
   columns:
-    - date: object
-    - dcoilwtico: float
+    date: object
+    dcoilwtico: float
   numerical_columns:
     - dcoilwtico
 
 
 holidays:
   columns:
-    - date: object
-    - type: str
-    - locale: str
-    - locale_name: str
-    - description: str
-    - transferred: bool
+    date: object
+    type: str
+    locale: str
+    locale_name: str
+    description: str
+    transferred: bool
   categorical_columns:
     - type
     - locale

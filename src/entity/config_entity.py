@@ -25,6 +25,6 @@ class DataIngestionConfig :
     collection_names : List= field (default_factory = lambda:DATA_INGESTION_COLLECTION_NAME)
 
 @dataclass
-class DataValidaionConfig : 
-    data_validation_dir : str = os.path.join(training_pipeline_config,DATA_VALIDATION_DIR_NAME)
+class DataValidationConfig : 
+    data_validation_dir : str = os.path.join(training_pipeline_config.artifact_dir,DATA_VALIDATION_DIR_NAME)
     validation_report_file_path : str = os.path.join(data_validation_dir,DATA_VALIDATION_REPORT_FILE_NAME)

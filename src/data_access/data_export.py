@@ -33,9 +33,9 @@ class ExportData :
             print(f'Fetching data from mongodb')
             df = pd.DataFrame(list(collection.find()))
             print(f"Data ftched with len {len(df)}")
+            cols_to_drop = ["_id", "id"]
             
-            if "_id" in df.columns.to_list() : 
-                df = df.drop(columns=["_id"],axis=1)
+            df = df.drop(columns=cols_to_drop, axis=1, errors='ignore')
             df.replace({"na" : np.nan},inplace=True)  #as pandas function only consider np.nan as missing value
             return df
         

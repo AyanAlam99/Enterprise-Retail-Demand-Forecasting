@@ -13,28 +13,28 @@ from src.constants import *
 
 
 class DataValidation: 
-    def __init__(self,data_ingestion_artifact : DataIngestionArtifact,data_validation_artifact : DataValidationArtifact) :
+    def __init__(self,data_ingestion_artifact : DataIngestionArtifact,data_validation_config : DataValidationConfig) :
         try:
             self.data_ingestion_artifact = data_ingestion_artifact
-            self.data_validation_artifact = data_validation_artifact
+            self.data_validation_config = data_validation_config
             self._schema_config = read_yaml(file_path=SCHEMA_FILE_PATH)
         except Exception as e : 
            raise  MyException(e,sys) from e
     
-    def validate_number_columns(self, df : DataFrame) ->bool: 
+    def validate_number_columns(self, df : DataFrame,schema_key:str) ->bool: 
         try : 
-            status = len(df.columns) == len(self._schema_config["columns"])
+            status = len(df.columns) == len(self._schema_config[schema_key]["columns"])
             logging.info(f"Is required columns present : {[status]}")
             return status
         except Exception as e : 
             raise MyException(e,sys) from e 
         
-    def is_column_exist(self,df : DataFrame) ->bool : 
+    def is_column_exist(self,df : DataFrame, schema_key:str) ->bool : 
         try : 
             dataframe_columns = df.columns
             missing_numerical_columns = []
             missing_categorical_columns = []
-            for column in self._schema_config["columns"] : 
+            for column in self._schema_config[schema_key].get("numerical_columns",[]) : 
                 if column not in dataframe_columns:
                     missing_numerical_columns.append(column)
 
@@ -42,7 +42,7 @@ class DataValidation:
                 logging.info(f"Missing numerical column: {missing_numerical_columns}")
 
 
-            for column in self._schema_config["categorical_columns"]:
+            for column in self._schema_config[schema_key].get("categorical_columns",[]):
                 if column not in dataframe_columns:
                     missing_categorical_columns.append(column)
 
@@ -69,15 +69,15 @@ class DataValidation:
                 "train" : self.data_ingestion_artifact.train_file_path,
                 "test" : self.data_ingestion_artifact.test_file_path,
                 "oil" : self.data_ingestion_artifact.oil_file_path,
-                "holiday" : self.data_ingestion_artifact.holiday_file_path,
-                "store" : self.data_ingestion_artifact.stores_file_path,
+                "holidays" : self.data_ingestion_artifact.holiday_file_path,
+                "stores" : self.data_ingestion_artifact.stores_file_path,
                 "transactions" : self.data_ingestion_artifact.transactions_file_path
             }
 
             for key , value in data_to_validate.items() : 
                 df = DataValidation.read_data(value)
-                status_num = self.validate_number_columns(df=df)
-                status= self.is_column_exist(df=df)
+                status_num = self.validate_number_columns(df=df,schema_key=key)
+                status= self.is_column_exist(df=df,schema_key=key)
 
                 if not status or not status_num : 
                     validation_error_mssg += f"Columns are missing in {key} dataframe. "

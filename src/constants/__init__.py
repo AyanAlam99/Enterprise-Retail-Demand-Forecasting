@@ -17,4 +17,7 @@ TEST_FILE_NAME: str = "test.csv"
 
 DATA_INGESTION_COLLECTION_NAME = ["Train_Data", "Test", "Oil", "Stores", "Holidays_Events", "Transactions"]
 
-SCHEMA_FILE_PATH = "./configuration/schema_config.yaml"
+SCHEMA_FILE_PATH = "./config/schema_config.yaml"
+
+DATA_VALIDATION_DIR_NAME : str = "data_validation"
+DATA_VALIDATION_REPORT_FILE_NAME :str = "report.yaml"

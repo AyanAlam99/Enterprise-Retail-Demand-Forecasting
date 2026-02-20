@@ -21,7 +21,7 @@ class TrainPipeline :
             logging.info("Entered the data ingestion  in Train pipeline")
             data_ingestion = DataIngestion(data_ingestion_config=self.data_ingestion_config)
             data_ingestion_artfact = data_ingestion.initiate_data_ingestion()
-            logging.info("got the train and test set from mongodb")
+            logging.info("got all the data sets from mongodb")
 
             return data_ingestion_artfact
         except Exception as e : 

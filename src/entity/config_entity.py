@@ -32,6 +32,5 @@ class DataValidationConfig :
 
 @dataclass 
 class DataTransformationConfig : 
-    data_transformation_dir:str = os.path.join(training_pipeline_config.artifact_dir , DATA_TRANSFORMATION_DIR_NAME)
-
+    data_transformation_dir:str = os.path.join(training_pipeline_config.artifact_dir , DATA_TRANSFORMATION_DIR_NAME
     

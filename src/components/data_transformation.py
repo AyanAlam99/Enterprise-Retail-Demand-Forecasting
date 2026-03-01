@@ -70,6 +70,8 @@ class DataTransformation :
             test_df['is_test'] = 1
             combined_df = pd.concat([train_df, test_df], ignore_index=True)
 
+            stores_df = stores_df.rename(columns={'type': 'store_type'})
+
             # D) Merges
 
             combined_df = combined_df.merge(stores_df,on='store_nbr',how='left')
@@ -91,7 +93,7 @@ class DataTransformation :
             combined_df['desc'] = np.where(combined_df['nat_holiday_desc'] != 'None', combined_df['nat_holiday_desc'], combined_df['description'])
             
             combined_df = combined_df.drop(columns=['nat_holiday_desc', 'description', 'locale_name'])
-            combined_df = self._extract_date_features(combined_df)
+            combined_df = self.extract_date_features(combined_df)
 
             # F) Log transform target variable
             combined_df['sales'] = np.log1p(combined_df['sales'])
@@ -127,7 +129,7 @@ class DataTransformation :
             txn_mapping.rename(columns={'transactions': 'txn_backup'}, inplace=True)
 
             # D) Label Encoding
-            cat_features = ['city', 'state', 'type_x', 'cluster', 'type_y', 'nat_holiday_type', 'family', 'desc']
+            cat_features = ['city', 'state', 'store_type', 'cluster', 'type', 'nat_holiday_type', 'family', 'desc']
             preprocessing_obj = {'family_mapping': family_mapping, 'big_events': big_events, 'label_encoders': {}}
 
 

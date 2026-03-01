@@ -20,9 +20,11 @@ test:
     date: object
     store_nbr: int
     family: str
+    sales : float
     onpromotion: int
   numerical_columns:
     - store_nbr
+    - sales 
     - onpromotion
   categorical_columns:
     - family

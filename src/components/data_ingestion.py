@@ -1,7 +1,6 @@
 import os 
 import sys 
 import pandas as pd
-from sklearn.model_selection import train_test_split
 
 from src.constants import * 
 from src.data_access.data_export import ExportData
@@ -38,15 +37,18 @@ class DataIngestion :
         except Exception as e : 
             raise MyException(e,sys)
         
-    def split_data_train_test(self,dataframe:pd.DataFrame):
+    def split_data_train_test(self,raw_train_file_path : str ):
         try : 
-            logging.info("Entered into train test spllit of the dataframe")
+            logging.info("Starting Out-of-Time (Chronological) Split.")
 
-            training_df , testing_df = train_test_split(dataframe,test_size=self.data_ingestion_config.train_test_split_ratio)
-            logging.info("Performed train test split on the dataframe")
-            logging.info(
-                "Exited split_data_as_train_test method of Data_Ingestion class"
-            )
+            df = pd.read_csv(raw_train_file_path)
+            df['date'] = pd.to_datetime(df['date'])
+            df = df.sort_values(by=['store_nbr', 'family', 'date'])
+            cutoff_date = df['date'].max() - pd.Timedelta(days=OOT_SPLIT_DAYS)
+
+            training_df = df[df['date']<=cutoff_date]
+            testing_df = df[df['date'] > cutoff_date]
+            logging.info(f"OOT Split Successful. Train: {training_df.shape}, Test: {testing_df.shape}")
 
             train_dir = os.path.dirname(self.data_ingestion_config.training_file_path)
             test_dir = os.path.dirname(self.data_ingestion_config.testing_file_path)
@@ -57,6 +59,8 @@ class DataIngestion :
             training_df.to_csv(self.data_ingestion_config.training_file_path,index=False,header=True)
             testing_df.to_csv(self.data_ingestion_config.testing_file_path,index=False,header=True)
             logging.info(f"Exported train and test file path.")
+
+            return self.data_ingestion_config.training_file_path, self.data_ingestion_config.testing_file_path
         except Exception as e : 
             raise MyException(e , sys)
         
@@ -65,17 +69,19 @@ class DataIngestion :
         try : 
             data = self.export_data_into_feature_store()
             logging.info("Got data from mongodb")
-            # self.split_data_train_test(data)
             raw_dir = self.data_ingestion_config.raw_data_dir
+            raw_train_file = os.path.join(raw_dir, "Train_Data.csv")
+            
+            train_file_path, test_file_path = self.split_data_train_test(raw_train_file)
 
             data_ingestion_artifact = DataIngestionArtifact(
-                        train_file_path = os.path.join(raw_dir, "Train_Data.csv"),
-                        test_file_path = os.path.join(raw_dir, "Test.csv"),
-                        oil_file_path = os.path.join(raw_dir, "Oil.csv"),
-                        stores_file_path = os.path.join(raw_dir, "Stores.csv"),
-                        holiday_file_path = os.path.join(raw_dir, "Holidays_Events.csv"),
-                        transactions_file_path = os.path.join(raw_dir, "Transactions.csv"),
-                    )
+                            train_file_path=train_file_path,    # OOT Split Train
+                            test_file_path=test_file_path,      # OOT Split Test
+                            oil_file_path=os.path.join(raw_dir, "Oil.csv"),
+                            stores_file_path=os.path.join(raw_dir, "Stores.csv"),
+                            holiday_file_path=os.path.join(raw_dir, "Holidays_Events.csv"),
+                            transactions_file_path=os.path.join(raw_dir, "Transactions.csv"),
+                        )
             logging.info(f"Data ingestion artifact: {data_ingestion_artifact}")
             return data_ingestion_artifact
         except Exception as e:

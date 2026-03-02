@@ -2,7 +2,7 @@
 
 An end-to-end, production-ready Machine Learning Operations (MLOps) pipeline for time-series forecasting of retail store sales. This project predicts daily sales for various product families across multiple stores using a highly optimized XGBoost Regressor, complete with automated data ingestion from MongoDB, robust custom feature engineering, and strict quality gates.
 
-## 🚀 Project Overview
+##  Project Overview
 
 Unlike standard cross-sectional ML projects, this pipeline is designed specifically for **Time-Series Forecasting**. It handles the complexities of temporal data, including chronological splitting, dynamic lag feature generation, and stateful vs. stateless preprocessing, packaged cleanly into a custom wrapper for seamless deployment.
 

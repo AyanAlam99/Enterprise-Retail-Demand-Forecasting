@@ -13,6 +13,7 @@ from src.logging import logging
 from src.entity.estimator import MyModel
 
 
+
 class ModelTrainer : 
     def __init__(self,data_transformation_artifact : DataTransformationArtifact , model_trainer_config : ModelTrainerConfig) :
         self.data_transformation_artifact = data_transformation_artifact 

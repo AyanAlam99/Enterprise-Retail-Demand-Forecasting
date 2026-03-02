@@ -1,10 +1,11 @@
 import sys 
+import os 
 from typing import Tuple 
 import numpy as np 
 import xgboost as xgb 
 from sklearn.metrics import mean_squared_error , mean_absolute_error , r2_score
 
-from src.utils.main_utils import load_numpy_array_data , load_object,save_object , read_yaml
+from src.utils.main_utils import load_numpy_array_data , load_object,save_object , read_yaml , write_yaml
 from src.entity.config_entity import ModelTrainerConfig
 from src.entity.artifacts_entity import DataTransformationArtifact, RegressionMetricArtifact , ModelTrainerArtifact
 from src.exception import MyException 
@@ -104,6 +105,23 @@ class ModelTrainer :
                 test_metric_artifact=test_metric
             )
 
+
+            metrics_report = {
+                "train_metrics": {
+                    "r2_score": float(train_metric.r2_score),
+                    "rmse": float(train_metric.rmse),
+                    "mae": float(train_metric.mae)
+                },
+                "test_metrics": {
+                    "r2_score": float(test_metric.r2_score),
+                    "rmse": float(test_metric.rmse),
+                    "mae": float(test_metric.mae)
+                }
+            }
+
+            report_path = os.path.join(self.model_trainer_config.model_trainer_dir,"metrics_report.yaml")
+           
+            write_yaml(file_path=report_path, content=metrics_report)
             logging.info(f"Model trainer artifact: {model_trainer_artifact}")
             return model_trainer_artifact
         

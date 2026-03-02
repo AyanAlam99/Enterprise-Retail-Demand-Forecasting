@@ -45,4 +45,15 @@ class ModelTrainerConfig :
     model_config_file_path = MODEL_TRAINER_MODEL_CONFIG_FILE_PATH
     expected_score : float = MODEL_TRAINER_EXPECTED_SCORE 
     overfitting_underfitting_threshold: float = MODEL_TRAINER_OVERFITTING_UNDERFITTING_THRESHOLD
+
+@dataclass 
+class ModelEvaluationConfig : 
+    changed_threshold_score : float = MODEL_EVALUATION_CHANGED_THRESHOLD_SCORE 
+    bucket_name : str = MODEL_BUCKET_NAME
+    s3_model_key_path : str = MODEL_FILE_NAME
+
+@dataclass 
+class ModelPusherConfig : 
+    bucket_name : str = MODEL_BUCKET_NAME 
+    s3_model_key_path : str = MODEL_FILE_NAME   
     

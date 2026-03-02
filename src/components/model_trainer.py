@@ -34,7 +34,7 @@ class ModelTrainer :
 
             logging.info("Model training starts")
             model.fit(
-                x_train,x_test,
+                x_train,y_train,
                 eval_set = [(x_train,y_train),(x_test,y_test)],
                 verbose = 100
             )
@@ -44,7 +44,7 @@ class ModelTrainer :
             y_test_pred_log = model.predict(x_test)
 
             y_tain_pre_clipped = np.clip(y_train_pred_log,a_min= 0 , a_max = 20)
-            y_test_pre_clipped = np.clip(y_train_pred_log,a_min= 0 , a_max = 20)
+            y_test_pre_clipped = np.clip(y_test_pred_log,a_min= 0 , a_max = 20)
 
             y_train_actual = np.expm1(y_train)
             y_test_actual = np.expm1(y_test)

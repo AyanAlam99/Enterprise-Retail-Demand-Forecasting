@@ -44,4 +44,5 @@ class ModelTrainerConfig :
     trained_model_file_path = os.path.join(model_trainer_dir,MODEL_TRAINER_TRAINED_MODEL_DIR,MODEL_FILE_NAME)
     model_config_file_path = MODEL_TRAINER_MODEL_CONFIG_FILE_PATH
     expected_score : float = MODEL_TRAINER_EXPECTED_SCORE 
+    overfitting_underfitting_threshold: float = MODEL_TRAINER_OVERFITTING_UNDERFITTING_THRESHOLD
     

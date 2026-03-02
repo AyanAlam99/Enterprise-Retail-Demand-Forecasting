@@ -6,7 +6,7 @@ An end-to-end, production-ready Machine Learning Operations (MLOps) pipeline for
 
 Unlike standard cross-sectional ML projects, this pipeline is designed specifically for **Time-Series Forecasting**. It handles the complexities of temporal data, including chronological splitting, dynamic lag feature generation, and stateful vs. stateless preprocessing, packaged cleanly into a custom wrapper for seamless deployment.
 
-### 🌟 Key Architectural Highlights
+### Key Architectural Highlights
 
 * **Chronological OOT Split:** Replaces random `train_test_split` with a strict Out-of-Time split to prevent data leakage and simulate real-world forecasting accuracy.
 * **Custom Time-Series Transformation:** Bypasses standard `ColumnTransformer` to perform complex multi-table Pandas merges (`oil`, `holidays`, `transactions`, `stores`) and generates dynamic features like `lag_1`, `lag_7`, and `rolling_mean_7`.
@@ -15,7 +15,7 @@ Unlike standard cross-sectional ML projects, this pipeline is designed specifica
 * **YAML-Driven Hyperparameters:** Model parameters are strictly decoupled from code and loaded dynamically from `config/model.yaml`.
 * **Automated Quality Gates:** The pipeline automatically fails and prevents model saving if the Test $R^2$ Score drops below a defined threshold (85%) or if the Overfitting delta (Train $R^2$ - Test $R^2$) exceeds 5%.
 
-## 📊 Model Performance
+## Model Performance
 
 The current XGBoost model generalizes exceptionally well without memorizing the training data.
 

@@ -28,3 +28,13 @@ DATA_TRANSFORMATION_TRANSFORMED_DATA_DIR :str = "transformed"
 DATA_TRANSFORMATION_TRANSFORMED_OBJECT_DIR :str = "transformed_object"
 
 PREPROCSSING_OBJECT_FILE_NAME = "preprocessing.pkl"
+
+
+MODEL_TRAINER_DIR_NAME: str = 'model_trainer'
+MODEL_TRAINER_TRAINED_MODEL_DIR :str = 'trained_model'
+MODEL_TRAINER_TRAINED_MODEL_NAME : str = 'model.pkl'
+MODEL_TRAINER_MODEL_CONFIG_FILE_PATH : str = os.path.join('config','model.yaml')
+MODEL_TRAINER_EXPECTED_SCORE : float = 0.85
+
+MODEL_FILE_NAME :str = 'model.pkl'
+

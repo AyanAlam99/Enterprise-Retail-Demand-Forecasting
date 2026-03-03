@@ -10,7 +10,7 @@ class ProjEstimator :
 
     def __init__(self, bucket_name, model_path) : 
         self.bucket_name = bucket_name 
-        self.s3 = SimpleStorageServices 
+        self.s3 = SimpleStorageServices()
         self.model_path = model_path 
         self.loaded_model : MyModel = None 
 
@@ -28,7 +28,7 @@ class ProjEstimator :
     def save_model(self, from_file,remove:bool= False) -> None : 
         try : 
             self.s3.upload_file(
-                from_file,
+                from_filename = from_file, 
                 to_filename=self.model_path,
                 bucket_name=self.bucket_name,
                 remove=remove    

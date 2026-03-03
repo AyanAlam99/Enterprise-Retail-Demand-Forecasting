@@ -6,7 +6,7 @@ from sklearn.metrics import r2_score
 
 from src.entity.config_entity import ModelEvaluationConfig
 from src.entity.artifacts_entity import ModelTrainerArtifact, DataTransformationArtifact, ModelEvaluationArtifact
-from src.entity.s3_estimator import Proj1Estimator  
+from src.entity.s3_estimator import ProjEstimator  
 from src.exception import MyException
 from src.logging import logging
 from src.utils.main_utils import load_numpy_array_data
@@ -29,11 +29,11 @@ class ModelEvaluation :
         except Exception as e : 
             raise MyException(e,sys) from e 
     
-    def get_best_model(self)->Optional[Proj1Estimator] : 
+    def get_best_model(self)->Optional[ProjEstimator] : 
         try : 
             bucket_name = self.model_evaluation_config.bucket_name
             model_path = self.model_evaluation_config.s3_model_key_path
-            s3_estimator = Proj1Estimator(bucket_name,model_path)
+            s3_estimator = ProjEstimator(bucket_name,model_path)
             if s3_estimator.is_model_present(model_path=model_path):
                 return s3_estimator
             return None
@@ -45,7 +45,7 @@ class ModelEvaluation :
             logging.info("Loading transformed test array for evaluation...")
             test_arr = load_numpy_array_data(self.data_transformation_artifact.transformed_test_file_path)
             x_test,y_test = test_arr[:,:-1] , test_arr[:,-1]
-            y_test_actual = np.exmp1(y_test)
+            y_test_actual = np.expm1(y_test)
 
             trained_model_r2_score = self.model_trainer_artifact.test_metric_artifact.r2_score
             logging.info(f"R2 Score for Newly Trained Model: {trained_model_r2_score}")

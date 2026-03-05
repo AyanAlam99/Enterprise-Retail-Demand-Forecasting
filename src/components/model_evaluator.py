@@ -54,15 +54,25 @@ class ModelEvaluation :
             logging.info("Fetching production model from S3 (if available)...")
             best_model = self.get_best_model()
 
-            if best_model is not  None : 
+            if best_model is not None : 
                 logging.info("Production model found. Computing R2 Score for production model...")
-                y_hat_best_model_log = best_model.predict(x_test)
+                
+                # --- NAYA CODE YAHAN SE SHURU HAI ---
+                
+                # 1. Model ko explicitly memory mein load karein 
+                if best_model.loaded_model is None:
+                    best_model.loaded_model = best_model.load_model()
+                
+                # 2. NumPy array (x_test) ko seedha inner trained model (XGBoost) ko pass karein
+                # Ye step aapke MyModel preprocessing ko bypass kar dega
+                y_hat_best_model_log = best_model.loaded_model.trained_model_object.predict(x_test)
+                
+                # --- NAYA CODE YAHAN KHATAM HAI ---
+
                 y_hat_best_model_clipped = np.clip(y_hat_best_model_log, a_min=0, a_max=20)
                 y_hat_best_model_actual = np.expm1(y_hat_best_model_clipped)
 
                 best_model_r2_score = r2_score(y_test_actual , y_hat_best_model_actual)
-
-                logging.info(f"R2 Score - Production Model: {best_model_r2_score} | Newly Trained Model: {trained_model_r2_score}")
             else: 
                 logging.info("No production model found in S3. The newly trained model is the first of its kind.")
             

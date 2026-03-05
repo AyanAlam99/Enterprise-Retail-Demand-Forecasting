@@ -88,9 +88,7 @@ class SalesPredictor :
             raise MyException(e, sys)
         
     def fetch_historical_context(self, target_date: pd.Timestamp, store_nbr: int, family: str) -> pd.DataFrame: 
-        """
-        Production Step: Fetch exactly past 30 days of real data from MongoDB for Lags.
-        """
+      
         try:
             logging.info(f"Fetching real historical context for Store: {store_nbr}, Family: {family} prior to {target_date}")
             
@@ -174,9 +172,7 @@ class SalesPredictor :
             raise MyException(e, sys) from e 
 
     def calculate_dynamic_features(self, current_input_df: pd.DataFrame, history_df: pd.DataFrame) -> pd.DataFrame:
-        """
-        Calculates lags based on the historical context.
-        """
+    
         logging.info("Calculating dynamic lag features for prediction.")
         
         
@@ -220,9 +216,6 @@ class SalesPredictor :
         return current_input_df
 
     def predict(self, raw_dataframe: pd.DataFrame) -> float:
-        """
-        The main prediction orchestrator.
-        """
         try:
             logging.info("Starting prediction orchestration.")
             

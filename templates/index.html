@@ -9,7 +9,7 @@
         body { background-color: #f8f9fa; }
         .card { border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         .btn-primary { background-color: #007bff; border: none; }
-        /* Hide spinner by default */
+       
         #spinner { display: none; } 
     </style>
 </head>
@@ -34,22 +34,41 @@
                         <div class="row mb-3">
                             <div class="col">
                                 <label class="form-label">Product Family</label>
-                                <select name="family" class="form-select">
-                                    <option value="AUTOMOTIVE">AUTOMOTIVE</option>
-                                    <option value="BEAUTY">BEAUTY</option>
-                                    <option value="BEVERAGES">BEVERAGES</option>
-                                    <option value="BREAD/BAKERY">BREAD/BAKERY</option>
-                                    <option value="CLEANING">CLEANING</option>
-                                    <option value="DAIRY">DAIRY</option>
-                                    <option value="DELI">DELI</option>
-                                    <option value="EGGS">EGGS</option>
-                                    <option value="GROCERY I">GROCERY I</option>
-                                    <option value="GROCERY II">GROCERY II</option>
-                                    <option value="MEATS">MEATS</option>
-                                    <option value="PERSONAL CARE">PERSONAL CARE</option>
-                                    <option value="PRODUCE">PRODUCE</option>
-                                    <option value="SEAFOOD">SEAFOOD</option>
-                                    </select>
+                              <select name="family" class="form-select" required>
+                                <option value="AUTOMOTIVE">AUTOMOTIVE</option>
+                                <option value="BABY CARE">BABY CARE</option>
+                                <option value="BEAUTY">BEAUTY</option>
+                                <option value="BEVERAGES">BEVERAGES</option>
+                                <option value="BOOKS">BOOKS</option>
+                                <option value="BREAD/BAKERY">BREAD/BAKERY</option>
+                                <option value="CELEBRATION">CELEBRATION</option>
+                                <option value="CLEANING">CLEANING</option>
+                                <option value="DAIRY">DAIRY</option>
+                                <option value="DELI">DELI</option>
+                                <option value="EGGS">EGGS</option>
+                                <option value="FROZEN FOODS">FROZEN FOODS</option>
+                                <option value="GROCERY I">GROCERY I</option>
+                                <option value="GROCERY II">GROCERY II</option>
+                                <option value="HARDWARE">HARDWARE</option>
+                                <option value="HOME AND KITCHEN I">HOME AND KITCHEN I</option>
+                                <option value="HOME AND KITCHEN II">HOME AND KITCHEN II</option>
+                                <option value="HOME APPLIANCES">HOME APPLIANCES</option>
+                                <option value="HOME CARE">HOME CARE</option>
+                                <option value="LADIESWEAR">LADIESWEAR</option>
+                                <option value="LAWN AND GARDEN">LAWN AND GARDEN</option>
+                                <option value="LINGERIE">LINGERIE</option>
+                                <option value="LIQUOR,WINE,BEER">LIQUOR,WINE,BEER</option>
+                                <option value="MAGAZINES">MAGAZINES</option>
+                                <option value="MEATS">MEATS</option>
+                                <option value="PERSONAL CARE">PERSONAL CARE</option>
+                                <option value="PET SUPPLIES">PET SUPPLIES</option>
+                                <option value="PLAYERS AND ELECTRONICS">PLAYERS AND ELECTRONICS</option>
+                                <option value="POULTRY">POULTRY</option>
+                                <option value="PREPARED FOODS">PREPARED FOODS</option>
+                                <option value="PRODUCE">PRODUCE</option>
+                                <option value="SCHOOL AND OFFICE SUPPLIES">SCHOOL AND OFFICE SUPPLIES</option>
+                                <option value="SEAFOOD">SEAFOOD</option>
+                            </select>
                             </div>
                             <div class="col">
                                <label class="form-label">Items On Promotion</label>
@@ -86,7 +105,7 @@
         function showLoading() {
             document.getElementById('btnText').innerText = 'Fetching Model & Predicting...';
             document.getElementById('spinner').style.display = 'inline-block';
-            document.getElementById('predictBtn').disabled = true; // Prevent double clicks
+            document.getElementById('predictBtn').disabled = true;
         }
     </script>
 </body>

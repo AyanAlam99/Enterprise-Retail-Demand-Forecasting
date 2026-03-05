@@ -190,6 +190,17 @@ class DataTransformation :
             train_cols = [c for c in train_df.columns if c != target_col] + [target_col]
             test_cols = [c for c in test_df.columns if c != target_col] + [target_col]
 
+            target_col = 'sales'
+            train_cols = [c for c in train_df.columns if c != target_col] + [target_col]
+            test_cols = [c for c in test_df.columns if c != target_col] + [target_col]
+
+        
+            print("\n" + "="*50)
+            print("🚀 EXACT COLUMN ORDER FOR PREDICTION:")
+            print(train_cols)
+            print("="*50 + "\n")
+         
+
 
             train_arr = train_df[train_cols].values
             test_arr = test_df[test_cols].values

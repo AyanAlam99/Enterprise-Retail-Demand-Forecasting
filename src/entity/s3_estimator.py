@@ -40,7 +40,8 @@ class ProjEstimator :
         try : 
             if self.loaded_model is None : 
                 self.loaded_model = self.load_model()
-            return self.loaded_model.predict(dataframe=dataframe)
+            return self.loaded_model.predict(raw_dataframe=dataframe)
         except Exception as e :
             raise MyException(e,sys) from e
+            
         

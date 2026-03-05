@@ -57,17 +57,14 @@ class ModelEvaluation :
             if best_model is not None : 
                 logging.info("Production model found. Computing R2 Score for production model...")
                 
-                # --- NAYA CODE YAHAN SE SHURU HAI ---
-                
-                # 1. Model ko explicitly memory mein load karein 
+           
                 if best_model.loaded_model is None:
                     best_model.loaded_model = best_model.load_model()
                 
-                # 2. NumPy array (x_test) ko seedha inner trained model (XGBoost) ko pass karein
-                # Ye step aapke MyModel preprocessing ko bypass kar dega
+             
                 y_hat_best_model_log = best_model.loaded_model.trained_model_object.predict(x_test)
                 
-                # --- NAYA CODE YAHAN KHATAM HAI ---
+               
 
                 y_hat_best_model_clipped = np.clip(y_hat_best_model_log, a_min=0, a_max=20)
                 y_hat_best_model_actual = np.expm1(y_hat_best_model_clipped)

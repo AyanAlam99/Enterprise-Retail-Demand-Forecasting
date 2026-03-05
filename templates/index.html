@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favorita Sales Forecaster</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; }
+        .card { border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .btn-primary { background-color: #007bff; border: none; }
+        /* Hide spinner by default */
+        #spinner { display: none; } 
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card p-4">
+                    <h2 class="text-center mb-4">📈 Retail Sales Forecasting</h2>
+                    
+                    <form action="/predict" method="post" onsubmit="showLoading()">
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label class="form-label">Date</label>
+                                <input type="date" name="date" class="form-control" required>
+                            </div>
+                            <div class="col">
+                                <label class="form-label">Store Number</label>
+                                <input type="number" name="store_nbr" class="form-control" min="1" max="54" placeholder="1-54" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label class="form-label">Product Family</label>
+                                <select name="family" class="form-select">
+                                    <option value="AUTOMOTIVE">AUTOMOTIVE</option>
+                                    <option value="BEAUTY">BEAUTY</option>
+                                    <option value="BEVERAGES">BEVERAGES</option>
+                                    <option value="BREAD/BAKERY">BREAD/BAKERY</option>
+                                    <option value="CLEANING">CLEANING</option>
+                                    <option value="DAIRY">DAIRY</option>
+                                    <option value="DELI">DELI</option>
+                                    <option value="EGGS">EGGS</option>
+                                    <option value="GROCERY I">GROCERY I</option>
+                                    <option value="GROCERY II">GROCERY II</option>
+                                    <option value="MEATS">MEATS</option>
+                                    <option value="PERSONAL CARE">PERSONAL CARE</option>
+                                    <option value="PRODUCE">PRODUCE</option>
+                                    <option value="SEAFOOD">SEAFOOD</option>
+                                    </select>
+                            </div>
+                            <div class="col">
+                               <label class="form-label">Items On Promotion</label>
+                                    <input type="number" name="onpromotion" class="form-control" min="0" placeholder="e.g. 0, 15, 25" required>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Oil Price ($)</label>
+                            <input type="number" step="0.01" name="dcoilwtico" class="form-control" placeholder="e.g. 45.50" required>
+                        </div>
+                        
+                        <button type="submit" id="predictBtn" class="btn btn-primary w-100">
+                            <span id="btnText">Forecast Sales</span>
+                            <span id="spinner" class="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true"></span>
+                        </button>
+                    </form>
+
+                    {% if prediction_result %}
+                    <div class="alert alert-success mt-4 text-center">
+                        <h4>{{ prediction_result }}</h4>
+                        <p class="mb-0">Details: {{ context.family }} at Store {{ context.store }} on {{ context.date }}</p>
+                    </div>
+                    {% endif %}
+
+                    {% if error %}
+                    <div class="alert alert-danger mt-4">{{ error }}</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showLoading() {
+            document.getElementById('btnText').innerText = 'Fetching Model & Predicting...';
+            document.getElementById('spinner').style.display = 'inline-block';
+            document.getElementById('predictBtn').disabled = true; // Prevent double clicks
+        }
+    </script>
+</body>
+</html>

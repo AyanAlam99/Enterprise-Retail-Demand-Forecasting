@@ -53,26 +53,26 @@ class DataTransformation :
 
             logging.info("Applying Base Merges ") 
 
-            # A) Date formatting
+            # Date formatting
             for df in [train_df,test_df,oil_df,stores_df,holidays_df,txn_df] : 
                 if 'date' in df.columns : 
                     df['date']= pd.to_datetime(df['date'])
 
-            # B) Clean Oil & Holidays
+            # Clean Oil & Holidays
 
             oil_df['dcoilwtico'] = oil_df['dcoilwtico'].ffill().bfill()
             holidays_df = holidays_df[holidays_df['transferred'] == False].drop(columns=['transferred'])
             nat_holiday = holidays_df[holidays_df['locale'] == 'National'].rename(columns={'type': 'nat_holiday_type', 'description': 'nat_holiday_desc'})
             loc_reg_holidays = holidays_df[holidays_df['locale'].isin(['Regional', 'Local'])]
 
-            # C) Combining Train & Test temporarily for uniform merging
+            # Combining Train & Test temporarily for uniform merging
             train_df['is_test'] = 0
             test_df['is_test'] = 1
             combined_df = pd.concat([train_df, test_df], ignore_index=True)
 
             stores_df = stores_df.rename(columns={'type': 'store_type'})
 
-            # D) Merges
+            # Merges
 
             combined_df = combined_df.merge(stores_df,on='store_nbr',how='left')
             combined_df = combined_df.merge(nat_holiday[['date', 'nat_holiday_type', 'nat_holiday_desc']], on='date', how='left')
@@ -83,7 +83,7 @@ class DataTransformation :
             combined_df = combined_df.merge(txn_df, on=['date', 'store_nbr'], how='left')
             combined_df = combined_df.merge(oil_df, on='date', how='left')
 
-            # E) Clean Merged Columns
+            # Clean Merged Columns
 
             combined_df['transactions'] = combined_df['transactions'].fillna(0)
             cols_to_fill = ['nat_holiday_type', 'locale_name', 'type', 'description', 'nat_holiday_desc']
@@ -95,7 +95,7 @@ class DataTransformation :
             combined_df = combined_df.drop(columns=['nat_holiday_desc', 'description', 'locale_name'])
             combined_df = self.extract_date_features(combined_df)
 
-            # F) Log transform target variable
+            # Log transform target variable
             combined_df['sales'] = np.log1p(combined_df['sales'])
 
             # Split back 
@@ -104,9 +104,9 @@ class DataTransformation :
 
             logging.info("Calculating Target-Based Features (Strictly on Train to avoid Leakage)")
 
-            #### TARGET BASED FEATURES ####
+            
 
-            # A) Holiday Lift Analysis
+            # Holiday Lift Analysis
 
             baseline_sales = train_df[train_df['desc'] == 'None']['sales'].mean()
             holiday_stats = train_df.groupby('desc')['sales'].mean().reset_index()
@@ -117,18 +117,18 @@ class DataTransformation :
             train_df['is_big_event'] = train_df['desc'].isin(big_events).astype(int)
             test_df['is_big_event'] = test_df['desc'].isin(big_events).astype(int)
 
-            # B) Family Avg Sales
+            #  Family Avg Sales
 
             family_mapping = train_df.groupby('family')['sales'].mean().to_dict()
             global_mean = train_df['sales'].mean()
             train_df['family_avg_sales'] = train_df['family'].map(family_mapping)
             test_df['family_avg_sales'] = test_df['family'].map(family_mapping).fillna(global_mean)
 
-            # C) Transaction Backup
+            # Transaction Backup
             txn_mapping = train_df.groupby(['store_nbr', 'day_of_week'])['transactions'].mean().reset_index()
             txn_mapping.rename(columns={'transactions': 'txn_backup'}, inplace=True)
 
-            # D) Label Encoding
+            # Label Encoding
             cat_features = ['city', 'state', 'store_type', 'cluster', 'type', 'nat_holiday_type', 'family', 'desc']
             preprocessing_obj = {'family_mapping': family_mapping, 'big_events': big_events, 'label_encoders': {}}
 
@@ -138,7 +138,7 @@ class DataTransformation :
                     le = LabelEncoder()
                     train_df[col] = le.fit_transform(train_df[col].astype(str))
                     
-                    # Handle unseen test labels
+                    
                     test_df[col] = test_df[col].astype(str).map(lambda s: s if s in le.classes_ else '<unknown>')
                     le.classes_ = np.append(le.classes_, '<unknown>')
                     test_df[col] = le.transform(test_df[col])
@@ -148,7 +148,7 @@ class DataTransformation :
             logging.info("Calculating Lag Features...")
 
 
-            ### AGAIN TEMP COMBINIG FOR LAGS 
+          
 
             combined_df = pd.concat([train_df, test_df], axis=0).reset_index(drop=True)
 
@@ -168,12 +168,12 @@ class DataTransformation :
             
             combined_df['transactions_lag_1'] = combined_df.groupby(['store_nbr', 'family'])['transactions'].transform(lambda x: x.shift(1))
 
-            # Split back final time based on cutoff date
+            
             cutoff_date = train_df['date'].max()
             train_df = combined_df[combined_df['date'] <= cutoff_date].copy()
             test_df = combined_df[combined_df['date'] > cutoff_date].copy()
 
-            # Fill NA for missing Test transactions using backup
+           
             test_df = test_df.merge(txn_mapping, on=['store_nbr', 'day_of_week'], how='left')
             test_df['transactions_lag_1'] = test_df['transactions_lag_1'].fillna(test_df['txn_backup'])
             test_df.drop(columns=['txn_backup'], inplace=True)
@@ -195,11 +195,7 @@ class DataTransformation :
             test_cols = [c for c in test_df.columns if c != target_col] + [target_col]
 
         
-            print("\n" + "="*50)
-            print("🚀 EXACT COLUMN ORDER FOR PREDICTION:")
-            print(train_cols)
-            print("="*50 + "\n")
-         
+      
 
 
             train_arr = train_df[train_cols].values

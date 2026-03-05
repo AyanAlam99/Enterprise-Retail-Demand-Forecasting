@@ -18,13 +18,27 @@ class MyModel :
 
         label_encoders_dict = self.preprocessing_object['label_encoders']
 
+
+        
+
         for col , le in label_encoders_dict.items() : 
             if col in df.columns : 
                 df[col] = df[col].astype(str).map(lambda s: s if s in le.classes_ else '<unknown>')
                 df[col] = le.transform(df[col])
 
-        cols_to_drop = ['date', 'desc', 'transactions', 'dcoilwtico']
+        cols_to_drop = ['date', 'desc', 'transactions', 'dcoilwtico','sales']
         df = df.drop(columns=cols_to_drop, errors='ignore')
+
+
+        expected_cols = [
+            'store_nbr', 'family', 'onpromotion', 'city', 'state', 'store_type', 
+            'cluster', 'nat_holiday_type', 'type', 'is_holiday', 'day', 'month', 
+            'year', 'day_of_week', 'quarter', 'is_weekend', 'is_payday', 
+            'time_index', 'is_big_event', 'family_avg_sales', 'sales_lag_1', 
+            'sales_lag_7', 'sales_lag_14', 'sales_lag_30', 'rolling_mean_7', 
+            'oil_price_lag_1', 'oil_price_diff', 'transactions_lag_1'
+        ]
+        df = df[expected_cols]
         
    
         input_array = df.values
@@ -36,4 +50,4 @@ class MyModel :
         return predictions_actual
 
 
-        return predictions
+     

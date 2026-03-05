@@ -1,0 +1,15 @@
+__pycache__/
+artifacts/*
+!artifacts/data_ingestion/
+!artifacts/data_ingestion/raw_data/
+!artifacts/data_ingestion/raw_data/stores.csv
+.venv 
+.env 
+.gitignore
+logs 
+template.py
+demo.py
+README.md
+LICENSE
+debug.ipynb
+*.ipynb

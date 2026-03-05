@@ -10,8 +10,17 @@ from src.logging import logging
 
 app = FastAPI()
 
-# Templates setup
 templates = Jinja2Templates(directory="templates")
+
+STORES_CSV_PATH = "artifacts/03_05_2026_20_50_14/data_ingestion/raw_data/stores.csv"
+
+try : 
+    stores_df = pd.read_csv(STORES_CSV_PATH)
+    STORE_MAPPING = stores_df.set_index('store_nbr').to_dict('index')
+    logging.info("Store mapping loaded successfully into memory.")
+except Exception as e : 
+    logging.error(f"Could not load stores.csv for mapping {e}")
+    STORE_MAPPING ={} 
 
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
@@ -27,23 +36,28 @@ async def predict_sales(
     dcoilwtico: float = Form(...)
 ):
     try:
-        # 1. User input ko SalesData object mein pack karna
+        
+        store_info = STORE_MAPPING.get(store_nbr , {"city" : 'Quito',"state":"Pichincha","type":"A","cluster":1})
+
         sales_data = SalesData(
             date=date,
             store_nbr=store_nbr,
             family=family,
             onpromotion=onpromotion,
             dcoilwtico=dcoilwtico,
-            city="Quito",  # Default values for demo
-            state="Pichincha",
-            store_type="A",
-            cluster=1
+            city = store_info.get("city"),
+            state = store_info.get("state"),
+            store_type =store_info.get("type"),
+            cluster = store_info.get("cluster"),
+
+            holiday_type = "None",
+            holiday_description = "None"
         )
         
-        # 2. DataFrame banani
+       
         input_df = sales_data.get_sales_input_dataframe()
         
-        # 3. Predictor trigger karna
+    
         predictor = SalesPredictor()
         prediction = predictor.predict(input_df)
         

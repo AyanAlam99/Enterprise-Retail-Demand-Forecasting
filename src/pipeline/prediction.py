@@ -15,6 +15,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+
 class SalesData : 
     def __init__(self ,date: str,
                  store_nbr: int,
@@ -61,7 +62,7 @@ class SalesData :
                 "cluster": [self.cluster],
                 "transactions": [self.transactions],
                 "nat_holiday_type": [self.holiday_type],
-                "type": ['None'], # ✅ REGIONAL HOLIDAY KE LIYE DEFAULT 'None'
+                "type": ['None'], 
                 "desc": [self.holiday_description]
             }
             return input_data

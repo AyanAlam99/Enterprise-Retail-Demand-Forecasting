@@ -174,6 +174,118 @@ git push main
 ```
 
 ---
+ 
+## 🔨 How This Project Was Built — End-to-End Flow
+ 
+A complete walkthrough of every phase of development, from environment setup to live cloud deployment.
+ 
+---
+ 
+### 🗂️ Phase 1 — Project Scaffolding
+ 
+| | |
+|---|---|
+| ✦ | Generated project template via `template.py` |
+| ✦ | Configured `setup.py` + `pyproject.toml` for local package imports |
+| ✦ | Created conda virtual environment (Python 3.10) |
+| ✦ | Installed all dependencies from `requirements.txt` |
+ 
+---
+ 
+### 🍃 Phase 2 — MongoDB Atlas Setup
+ 
+| | |
+|---|---|
+| ✦ | Created MongoDB Atlas project & M0 cluster (free tier) |
+| ✦ | Configured DB user credentials & network access (`0.0.0.0/0`) |
+| ✦ | Obtained Python connection string (Driver: Python 3.6+) |
+| ✦ | Pushed raw dataset to Atlas from notebook (`mongoDB_demo.ipynb`) |
+| ✦ | Verified data ingestion via Atlas → Browse Collections |
+ 
+---
+ 
+### 📋 Phase 3 — Logging, Exception Handling & EDA
+ 
+| | |
+|---|---|
+| ✦ | Built custom logger (`logger.py`) — tested on `demo.py` |
+| ✦ | Built structured exception handler (`exception.py`) — tested on `demo.py` |
+| ✦ | Completed EDA & Feature Engineering notebooks |
+ 
+---
+ 
+### ⚙️ Phase 4 — Training Pipeline (Component by Component)
+ 
+For each component, the same strict workflow was followed:
+ 
+```
+constants/__init__.py  →  config_entity.py  →  artifact_entity.py
+        →  component code  →  wired into train_pipeline.py  →  tested via demo.py
+```
+ 
+| Step | Component | What Was Built |
+|------|-----------|----------------|
+| **1** | **Data Ingestion** | MongoDB fetch → chronological OOT split · Set `MONGODB_URL` env var |
+| **2** | **Data Validation** | Schema enforcement via `config/schema.yaml` |
+| **3** | **Data Transformation** | Multi-table merges, lag features, encoding · `estimator.py` added to `entity/` |
+| **4** | **Model Trainer** | XGBoost training + automated quality gates · `MyModel` wrapper added to `estimator.py` |
+ 
+---
+ 
+### ☁️ Phase 5 — AWS Infrastructure Setup
+ 
+| | |
+|---|---|
+| ✦ | IAM user created with `AdministratorAccess` policy |
+| ✦ | Access keys generated → stored as env variables |
+| ✦ | S3 bucket created (`us-east-1`): `enterprise-model-proj` — public access enabled for model registry reads |
+| ✦ | `aws_connection.py` configured for S3 push/pull |
+| ✦ | `s3_estimator.py` built for versioned model artefact management |
+ 
+---
+ 
+### 🏆 Phase 6 — Model Evaluation & Model Pusher
+ 
+| | |
+|---|---|
+| ✦ | **Model Evaluation:** enforces quality gates before promoting — Thresholds: Test R² > 85% & Overfitting Delta < 5% |
+| ✦ | **Model Pusher:** uploads approved model artefact to S3 registry |
+ 
+---
+ 
+### 🌐 Phase 7 — Prediction Pipeline & FastAPI App
+ 
+| | |
+|---|---|
+| ✦ | Prediction pipeline built — fetches 30-day lag context from MongoDB |
+| ✦ | FastAPI `app.py` wired up with `/` (UI) and `/predict` routes |
+| ✦ | HTML front-end added to `templates/` |
+ 
+---
+ 
+### 🐳 Phase 8 — Dockerisation & CI/CD Pipeline
+ 
+| | |
+|---|---|
+| ✦ | `Dockerfile` + `.dockerignore` configured (slim Python image) |
+| ✦ | `.github/workflows/aws.yaml` CI/CD pipeline written |
+ 
+**AWS Infrastructure Provisioned:**
+ 
+| Service | Configuration |
+|---------|---------------|
+| **ECR** | Private container registry · Region: `us-east-1` · Repo: `retail-sales-app` |
+| **EC2** | Ubuntu Server 24.04 · T2 Medium · 30GB storage · Docker via `get-docker.sh` · GitHub self-hosted runner registered ✓ · Inbound rule: TCP `8000` → `0.0.0.0/0` |
+ 
+**GitHub Secrets Configured:**
+ 
+```
+AWS_ACCESS_KEY_ID   /   AWS_SECRET_ACCESS_KEY   /   AWS_REGION   /   ECR_REPO   /   MONGO_URL
+```
+ 
+> ✦ Every `git push` to `main` → auto build → ECR push → EC2 deploy → App live on port `:8000`
+ 
+---
 
 ## ⚙️ Getting Started
 

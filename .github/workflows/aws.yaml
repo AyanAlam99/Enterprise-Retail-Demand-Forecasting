@@ -30,9 +30,7 @@ jobs:
           ECR_REPOSITORY: ${{ secrets.ECR_REPO }}
           IMAGE_TAG: latest 
         run: |
-          # 1. Image banai (Dot lagana zaroori hai)
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          # 2. Image ko ECR par push kiya
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
   
   Continuous-Deployment:

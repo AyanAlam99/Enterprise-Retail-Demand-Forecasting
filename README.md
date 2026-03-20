@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🏪 Enterprise Retail Store Sales Forecasting
+#  Enterprise Retail Store Sales Forecasting
 ### A Production-Ready MLOps Pipeline
 
 [![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)

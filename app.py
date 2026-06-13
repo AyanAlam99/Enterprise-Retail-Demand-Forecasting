@@ -3,24 +3,22 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 import uvicorn
-import pandas as pd
 
 from src.pipeline.prediction import SalesData, SalesPredictor
+from src.data_access.data_export import ExportData
 from src.logging import logging
 
 app = FastAPI()
 
 templates = Jinja2Templates(directory="templates")
 
-STORES_CSV_PATH = "artifacts/03_05_2026_20_50_14/data_ingestion/raw_data/stores.csv"
-
-try : 
-    stores_df = pd.read_csv(STORES_CSV_PATH)
+try :
+    stores_df = ExportData().export_collection_as_dataframe(collection_name="Stores")
     STORE_MAPPING = stores_df.set_index('store_nbr').to_dict('index')
-    logging.info("Store mapping loaded successfully into memory.")
-except Exception as e : 
-    logging.error(f"Could not load stores.csv for mapping {e}")
-    STORE_MAPPING ={} 
+    logging.info("Store mapping loaded successfully into memory from MongoDB.")
+except Exception as e :
+    logging.error(f"Could not load store mapping from MongoDB: {e}")
+    STORE_MAPPING ={}
 
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):

@@ -18,7 +18,7 @@
 
 <br/>
 
-### 🔗 [**Try the Live Demo →**](http://retail-sales-forecast.duckdns.org:8000/)
+### 🔗 Live Demo: [http://retail-sales-forecast.duckdns.org:8000/](http://retail-sales-forecast.duckdns.org:8000/)
 
 <br/>
 

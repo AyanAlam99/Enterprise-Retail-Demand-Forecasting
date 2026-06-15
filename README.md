@@ -10,11 +10,15 @@
 [![AWS](https://img.shields.io/badge/AWS_EC2%2FS3%2FECR-FF9900?style=for-the-badge&logo=amazon-aws&logoColor=white)](https://aws.amazon.com)
 [![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://docker.com)
 [![CI/CD](https://img.shields.io/badge/GitHub_Actions-CI%2FCD-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)](https://github.com/features/actions)
-[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Online-success?style=for-the-badge)](http://54.165.246.236:8000/)
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Online-success?style=for-the-badge)](http://retail-sales-forecast.duckdns.org:8000/)
 
 <br/>
 
 > *An end-to-end, production-ready MLOps pipeline for time-series forecasting of retail store sales — from raw MongoDB data to a live AWS-hosted prediction API, fully automated with CI/CD.*
+
+<br/>
+
+### 🔗 [**Try the Live Demo →**](http://retail-sales-forecast.duckdns.org:8000/)
 
 <br/>
 
@@ -335,7 +339,9 @@ Then visit `http://localhost:8000` to access the forecasting UI.
 
 **The application is deployed and running on AWS EC2:**
 
-> 🔗 **[http://54.165.246.236:8000/](http://54.165.246.236:8000/)**
+> 🔗 **[http://retail-sales-forecast.duckdns.org:8000/](http://retail-sales-forecast.duckdns.org:8000/)**
+
+> ℹ️ For meaningful forecasts, pick a date between **2013-01-01 and 2017-08-15** — the model is trained on this historical window and won't extrapolate accurately to other dates.
 
 ---
 
